@@ -1,32 +1,30 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
+import api from "../api";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const { accessToken,axios } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchProtectedData = async () => {
       try {
-        const response = await axios.post("/auth/protected", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log("Protected Data:", response.data);
+        const response = await api.post("/auth/protected");
+        setData(response.data);
       } catch (error) {
         console.error("Error fetching protected data:", error);
       }
     };
-console.log("accessToken==>",accessToken)
-    if (accessToken) {
-      fetchProtectedData();
-    }
-  }, []);
 
-  return <h2>Welcome to the Dashboard!
-    <Link to="/dashboard2">nice</Link>
-  </h2>;
+    if (isAuthenticated) fetchProtectedData();
+  }, [isAuthenticated]);
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : <p>Loading...</p>}
+    </div>
+  );
 };
 
 export default Dashboard;

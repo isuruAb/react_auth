@@ -18,7 +18,7 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       try {
-        const refreshResponse = await axios.post("/auth/refresh", {}, { withCredentials: true });
+        const refreshResponse = await api.post("/auth/refresh", {}, { withCredentials: true });
        
         const access_token = refreshResponse.data.access_token;
         localStorage.setItem("access_token", access_token);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import api from "../api";
+import api from "../utils/api";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { urls } from "../utils/urls";
 
 const Dashboard = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -10,7 +10,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProtectedData = async () => {
       try {
-        const response = await api.post("/auth/protected");
+        const response = await api.post(urls.protected);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching protected data:", error);

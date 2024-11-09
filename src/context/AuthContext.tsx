@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import api from "../utils/api";
+import { urls } from "../utils/urls";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -33,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = async () => {
-    const res = await api.post("/auth/logout", {}, { withCredentials: true });
+    const res = await api.post(urls.logout, {}, { withCredentials: true });
     console.log("res==>", res);
     localStorage.removeItem("access_token");
 
